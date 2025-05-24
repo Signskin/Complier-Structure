@@ -1,0 +1,107 @@
+define symbol state transfer extra1
+
+symbol
+SCO   ; semicolon
+ID    ; identifier
+LBK   ; left bracket, [
+RBK   ; right bracket, ]
+LPA   ; left parentheses, (
+RPA   ; right parentheses, )
+LBR   ; left braces, {
+RBR   ; right braces, }
+INT   ; int
+VOID  ; void
+NUM   ; signed integer
+FLO   ; float numbers
+CMA   ; comma, ,
+IF    ; if
+ELSE  ; else
+RETURN ; return
+PRINT ; print
+ADD   ; +
+MUS   ; -
+DIV   ; /
+ROP   ; < <= == > >= !=
+ASG   ; =
+AND   ; and
+OR    ; or
+STR   ; string literal
+end symbol
+
+state
+begin 0
+accept s1 SCO
+accept s2 LPA
+accept s3 LBK
+accept s4 LBR
+accept s5 RPA
+accept s6 RBK
+accept s7 RBR
+accept s8 CMA
+accept s9 DIV
+accept r1 ROP
+accept r2 ROP
+accept r7 ASG
+accept r3 ROP
+accept r4 ROP
+accept r5 ROP
+t2
+accept r6 ROP
+accept i1 extra1
+accept n1 ADD
+accept n2 NUM
+accept t3 MUS
+accept n3 FLO
+t4
+t5
+accept n6 STR
+end state
+
+transfer
+0 s1 ;
+0 s2 \(
+0 s3 \[
+0 s4 \{
+0 s5 \)
+0 s6 \]
+0 s7 \}
+0 s8 ,
+0 s9 /
+0 r1 <
+r1 r2 =
+0 r7 =
+r7 r3 =
+0 r4 >
+r4 r5 =
+0 t2 !
+t2 r6 =
+0 i1 [a-z]|[A-Z]|_
+i1 i1 [a-z]|[A-Z]|[0-9]|_
+0 n1 \+
+0 n2 [1-9]
+n1 n2 [1-9]
+0 t3 -
+t3 n2 [1-9]
+n2 n2 [0-9]
+n2 n3 \.
+n3 n3 [0-9]
+0 t4 \.
+t4 n3 [0-9]
+0 t5 \"
+t5 t5 [^\"]
+t5 n6 \"
+end transfer
+
+extra1
+INT int
+VOID void
+IF if
+ELSE else
+RETURN return
+PRINT print
+AND and
+OR or
+AND AND
+OR OR
+ID
+end extra1

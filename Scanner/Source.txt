@@ -1,0 +1,1 @@
+int array[50]; int a ( int b ; ) { c = d + 1 ; return c } ; void f ( int x ; ) { int x ; void ff ( int y ; int fff ( ) ; ) { if ( 1 AND a = 1 ) ff ( 3 , fptt ( ) , ) else c = f ( e , ) ; return c } ; f ( a , b ( ) , ) } ; c ( 1 , )

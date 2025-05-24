@@ -1,0 +1,94 @@
+#ifndef __SYNTAX_OBJECT_H__
+#define __SYNTAX_OBJECT_H__
+#include <string>
+#include <vector>
+#include <fstream>
+#include <sstream>
+using namespace std;
+struct SingleSynObj
+{
+    string Type;
+    string Value;
+};
+
+struct Processed
+{   
+    vector<SingleSynObj> ProcessedList;
+
+    void parseFromFile(ifstream& file)
+    {
+        string line;
+        while (getline(file, line))
+        {
+            if (line.empty()) continue; // Skip empty lines
+            SingleSynObj obj;
+            stringstream ss(line);
+            ss >> obj.Type; // Read the type
+            ss >> obj.Value; // Read the value
+            ProcessedList.push_back(obj); // Add to the processed list
+        }
+    }
+
+    void printInMasterGram(ostream& out)
+    {
+        for(auto&& obj : ProcessedList)
+        {
+            if(obj.Type == "ID")
+            {
+                out<<"d ";
+            }
+            else if(obj.Type == "NUM")
+            {
+                out<<"i ";
+            }
+            else out<< obj.Value<<" ";
+        }
+    }
+
+    void AdjustToMasterGram()
+    {
+        for(auto&& obj : ProcessedList)
+        {
+            if(obj.Type == "ID")
+            {
+                obj.Type = "d";
+            }
+            else if(obj.Type == "NUM")
+            {
+                obj.Type = "i";
+            }
+            else
+            {
+                obj.Type = obj.Value;
+            }
+        }
+    }
+};
+#endif
+
+#ifdef __DEBUG_SYNTAX_OBJECT_H__
+#include <iostream>
+#include <print>
+int main()
+{
+    ifstream file("Tokens.txt");
+    if (!file.is_open())
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+    Processed processed;
+    processed.parseFromFile(file);
+    file.close();
+
+    for (const auto& obj : processed.ProcessedList)
+    {
+        cout << "Type: " << obj.Type << ", Value: " << obj.Value << endl;
+    }
+
+    println("");
+    processed.printInMainGram(cout);
+    cout << endl;
+    return 0;
+}
+#endif
